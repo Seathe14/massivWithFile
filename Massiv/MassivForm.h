@@ -512,7 +512,7 @@ private: System::Void radioButton1_CheckedChanged(System::Object^  sender, Syste
 }
 private: System::Void Complete_Click(System::Object^  sender, System::EventArgs^  e) {
 	Array.clear();
-	double oper;
+	double oper = 0;
 	int min, max;
 	int buf,k =0;
 	int push;
@@ -549,7 +549,7 @@ private: System::Void Complete_Click(System::Object^  sender, System::EventArgs^
 	case 2:
 		for (int i = 0; i < Array.size(); i++)
 		{
-			oper += Array.at(i);
+		oper += Array.at(i);
 		}
 		tbResult->Text = "Среднее значение: " + (oper/Array.size()).ToString("F3");
 		break;
@@ -675,6 +675,31 @@ private: System::Void tbArr_KeyPress(System::Object^  sender, System::Windows::F
 				if(e->KeyChar != (char)Keys::Space)
 				e->Handled = true;          // Запрет ввода
 	}
+	if (tbArr->Text->EndsWith("-") && e->KeyChar == '-')
+		e->Handled = true;
+	/*if (!(tbArr->Text->EndsWith(" ")) && e->KeyChar == '-' && tbArr->Text->Length > 0)
+		e->Handled = true;*/
+	if (tbArr->Text->EndsWith("-") && e->KeyChar == ' ')
+		e->Handled = true;
+	/*if (tbArr->Text->EndsWith(" ") && e->KeyChar == ' ')
+		e->Handled = true;*/
+	if (tbArr->Text == "" && e->KeyChar == ' ')
+		e->Handled = true;
+	if (tbArr->SelectionStart < tbArr->Text->Length && tbArr->SelectionStart>0)
+	{
+		if (e->KeyChar == ' ' && (tbArr->Text[tbArr->SelectionStart-1] == ' ' || tbArr->Text[tbArr->SelectionStart] == ' '))
+			e->Handled = true;
+		if (e->KeyChar == '-' && tbArr->Text[tbArr->SelectionStart - 1] == '-' || tbArr->Text[tbArr->SelectionStart] == '-')
+		{
+			e->Handled = true;
+		}
+		if (tbArr->Text[tbArr->SelectionStart-1] != ' ')
+			e->Handled = true;
+		}
+	if (tbArr->Text->EndsWith(" ") && e->KeyChar == ' ')
+		e->Handled = true;
+	tbMinDiap->Text = Convert::ToString(tbArr->SelectionStart);
+	tbMaxDiap->Text = Convert::ToString(tbArr->Text->Length);
 }
 };
 }
