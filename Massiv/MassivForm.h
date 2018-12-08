@@ -501,7 +501,8 @@ private: System::Void GenerateArr_Click(System::Object^  sender, System::EventAr
 				tbArr->Text += Convert::ToString(Array.at(i)) + " ";
 			}
 		}
-		else {
+		else 
+		{
 			MessageBox::Show("Максимальное значение должно быть больше минимального");
 		}
 	}
@@ -529,7 +530,9 @@ private: System::Void Complete_Click(System::Object^  sender, System::EventArgs^
 			max = push;
 		}
 		if (min > push)
+		{
 			min = push;
+		}
 		Array.push_back(push);
 		k++;
 	}
