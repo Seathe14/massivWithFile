@@ -482,19 +482,28 @@ namespace Massiv {
 	private: System::Void MassivForm_Load(System::Object^  sender, System::EventArgs^  e) {
 	}
 private: System::Void GenerateArr_Click(System::Object^  sender, System::EventArgs^  e) {
-	Array.clear();
-	tbArr->Text = "";
-	Num = Convert::ToInt16(tbNum->Text);
-	minDiap = Convert::ToInt16(tbMinDiap->Text);
-	maxDiap = Convert::ToInt16(tbMaxDiap->Text);
-	srand(time(0));
-	for (int i = 0; i < Num; i++)
+	if (tbMinDiap->Text != "" && tbMaxDiap->Text != "" && tbNum->Text != "")
 	{
-		Array.push_back(rand() % (maxDiap - minDiap + 1) + minDiap);
-	}
-	for (int i = 0; i < Array.size(); i++)
-	{
-		tbArr->Text += Convert::ToString(Array.at(i)) + " ";
+		Array.clear();
+		tbArr->Text = "";
+		Num = Convert::ToInt16(tbNum->Text);
+		minDiap = Convert::ToInt16(tbMinDiap->Text);
+		maxDiap = Convert::ToInt16(tbMaxDiap->Text);
+		srand(time(0));
+		if (maxDiap > minDiap)
+		{
+			for (int i = 0; i < Num; i++)
+			{
+				Array.push_back(rand() % (maxDiap - minDiap + 1) + minDiap);
+			}
+			for (int i = 0; i < Array.size(); i++)
+			{
+				tbArr->Text += Convert::ToString(Array.at(i)) + " ";
+			}
+		}
+		else {
+			MessageBox::Show("Максимальное значение должно быть больше минимального");
+		}
 	}
 }
 private: System::Void radioButton1_CheckedChanged(System::Object^  sender, System::EventArgs^  e) {
