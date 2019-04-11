@@ -87,6 +87,10 @@ namespace Massiv {
 	private: System::Windows::Forms::Button^  CloseBut;
 	private: System::Windows::Forms::SaveFileDialog^  saveFileDialog1;
 	private: System::Windows::Forms::OpenFileDialog^  openFileDialog1;
+	private: System::Windows::Forms::Button^  SaveAs;
+	private: System::Windows::Forms::Button^  OpenFile;
+
+
 
 
 
@@ -136,6 +140,8 @@ namespace Massiv {
 			this->CloseBut = (gcnew System::Windows::Forms::Button());
 			this->saveFileDialog1 = (gcnew System::Windows::Forms::SaveFileDialog());
 			this->openFileDialog1 = (gcnew System::Windows::Forms::OpenFileDialog());
+			this->SaveAs = (gcnew System::Windows::Forms::Button());
+			this->OpenFile = (gcnew System::Windows::Forms::Button());
 			this->groupBox1->SuspendLayout();
 			this->groupBox2->SuspendLayout();
 			this->SuspendLayout();
@@ -452,15 +458,42 @@ namespace Massiv {
 			this->CloseBut->UseVisualStyleBackColor = true;
 			this->CloseBut->Click += gcnew System::EventHandler(this, &MassivForm::Close_Click);
 			// 
+			// saveFileDialog1
+			// 
+			this->saveFileDialog1->Filter = L"\"txt files (*.txt)|*.txt|All files (*.*)|*.*\"";
+			this->saveFileDialog1->RestoreDirectory = true;
+			// 
 			// openFileDialog1
 			// 
 			this->openFileDialog1->FileName = L"openFileDialog1";
+			// 
+			// SaveAs
+			// 
+			this->SaveAs->Location = System::Drawing::Point(423, 185);
+			this->SaveAs->Name = L"SaveAs";
+			this->SaveAs->Size = System::Drawing::Size(127, 23);
+			this->SaveAs->TabIndex = 16;
+			this->SaveAs->Text = L"Сохранить как";
+			this->SaveAs->UseVisualStyleBackColor = true;
+			this->SaveAs->Click += gcnew System::EventHandler(this, &MassivForm::SaveAs_Click);
+			// 
+			// OpenFile
+			// 
+			this->OpenFile->Location = System::Drawing::Point(423, 125);
+			this->OpenFile->Name = L"OpenFile";
+			this->OpenFile->Size = System::Drawing::Size(127, 23);
+			this->OpenFile->TabIndex = 17;
+			this->OpenFile->Text = L"Открыть файл";
+			this->OpenFile->UseVisualStyleBackColor = true;
+			this->OpenFile->Click += gcnew System::EventHandler(this, &MassivForm::OpenFile_Click);
 			// 
 			// MassivForm
 			// 
 			this->AutoScaleDimensions = System::Drawing::SizeF(6, 13);
 			this->AutoScaleMode = System::Windows::Forms::AutoScaleMode::Font;
 			this->ClientSize = System::Drawing::Size(586, 401);
+			this->Controls->Add(this->OpenFile);
+			this->Controls->Add(this->SaveAs);
 			this->Controls->Add(this->CloseBut);
 			this->Controls->Add(this->label7);
 			this->Controls->Add(this->textBox7);
@@ -712,12 +745,25 @@ private: System::Void tbArr_KeyPress(System::Object^  sender, System::Windows::F
 	tbMinDiap->Text = Convert::ToString(tbArr->SelectionStart);
 	tbMaxDiap->Text = Convert::ToString(tbArr->Text->Length);
 }
-		 private: System::Void button1_Click(System::Object^  sender, System::EventArgs^  e) {
+		 private: System::Void OpenFile_Click(System::Object^  sender, System::EventArgs^  e) {
 			 if (openFileDialog1->ShowDialog() == System::Windows::Forms::DialogResult::OK)
 			 {
 				 String^ filePath = openFileDialog1->FileName;
-				 Stream^ fileStream = openFileDialog1->OpenFile();
-
+				 Stream^ fileStream;
+				 String^ TextInFile;
+				 if ((fileStream = openFileDialog1->OpenFile()) != nullptr)
+				 {
+					 StreamReader^ reader = gcnew StreamReader(fileStream);
+					 // reader.
+					 // StreamWriter^ writer = gcnew StreamWriter(fileStream);
+					 while ((TextInFile = reader->ReadLine()) != nullptr)
+					 {
+						 if (reader->ReadLine() != "")
+						 {
+							 tbArr->Text = TextInFile;
+						 }
+					 }
+				 }
 				 //auto sr = gcnew StreamReader(openFileDialog1->FileName);
 			 }
 		 }
@@ -731,11 +777,52 @@ private: System::Void SaveAs_Click(System::Object^  sender, System::EventArgs^  
 			StreamWriter^ writer = gcnew StreamWriter(myStream);
 			//String^ path = saveFileDialog1->FileName;
 			//File::WriteAllText(saveFileDialog1->FileName, "HUELO");
-			writer->Write("Huesosi");
+			if (tbArr->Text != "")
+			{
+				writer->WriteLine("Исходный массив:");
+				writer->WriteLine(tbArr->Text);
+				writer->Write("Операция с массивом: ");
+				if (radioButton1->Checked)
+				{
+					writer->WriteLine("Сумма элементов");
+				}
+				else if (radioButton2->Checked)
+				{
+					writer->WriteLine("Среднее значение");
+				}
+				else if (radioButton3->Checked)
+				{
+					writer->WriteLine("Минимальный элемент");
+				}
+				else if (radioButton4->Checked)
+				{
+					writer->WriteLine("Максимальный элемент");
+				}
+				else if (radioButton8->Checked)
+				{
+					writer->WriteLine("Чётные элементы");
+				}
+				else if (radioButton7->Checked)
+				{
+					writer->WriteLine("Нечётные элементы");
+				}
+				else if (radioButton6->Checked)
+				{
+					writer->WriteLine("Сортировка по возрастанию");
+				}
+				else if (radioButton5->Checked)
+				{
+					writer->WriteLine("Сортировка по убыванию");
+				}
+				writer->WriteLine("Результаты операции: ");
+				writer->WriteLine(tbResult->Text);
+			}
 			writer->Close();
 			myStream->Close();
 		}
 	}
+}
+private: System::Void button1_Click_1(System::Object^  sender, System::EventArgs^  e) {
 }
 };
 }
