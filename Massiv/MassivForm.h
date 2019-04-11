@@ -9,6 +9,7 @@
 namespace Massiv {
 
 	using namespace System;
+	using namespace System::IO;
 	using namespace System::ComponentModel;
 	using namespace System::Collections;
 	using namespace System::Windows::Forms;
@@ -84,6 +85,8 @@ namespace Massiv {
 	private: System::Windows::Forms::Label^  label7;
 	private: System::Windows::Forms::TextBox^  textBox7;
 	private: System::Windows::Forms::Button^  CloseBut;
+	private: System::Windows::Forms::SaveFileDialog^  saveFileDialog1;
+	private: System::Windows::Forms::OpenFileDialog^  openFileDialog1;
 
 
 
@@ -129,6 +132,8 @@ namespace Massiv {
 			this->label7 = (gcnew System::Windows::Forms::Label());
 			this->textBox7 = (gcnew System::Windows::Forms::TextBox());
 			this->CloseBut = (gcnew System::Windows::Forms::Button());
+			this->saveFileDialog1 = (gcnew System::Windows::Forms::SaveFileDialog());
+			this->openFileDialog1 = (gcnew System::Windows::Forms::OpenFileDialog());
 			this->groupBox1->SuspendLayout();
 			this->groupBox2->SuspendLayout();
 			this->SuspendLayout();
@@ -445,6 +450,10 @@ namespace Massiv {
 			this->CloseBut->UseVisualStyleBackColor = true;
 			this->CloseBut->Click += gcnew System::EventHandler(this, &MassivForm::Close_Click);
 			// 
+			// openFileDialog1
+			// 
+			this->openFileDialog1->FileName = L"openFileDialog1";
+			// 
 			// MassivForm
 			// 
 			this->AutoScaleDimensions = System::Drawing::SizeF(6, 13);
@@ -700,6 +709,31 @@ private: System::Void tbArr_KeyPress(System::Object^  sender, System::Windows::F
 		e->Handled = true;
 	tbMinDiap->Text = Convert::ToString(tbArr->SelectionStart);
 	tbMaxDiap->Text = Convert::ToString(tbArr->Text->Length);
+}
+		 private: System::Void button1_Click(System::Object^  sender, System::EventArgs^  e) {
+			 if (openFileDialog1->ShowDialog() == System::Windows::Forms::DialogResult::OK)
+			 {
+				 String^ filePath = openFileDialog1->FileName;
+				 Stream^ fileStream = openFileDialog1->OpenFile();
+
+				 //auto sr = gcnew StreamReader(openFileDialog1->FileName);
+			 }
+		 }
+private: System::Void SaveAs_Click(System::Object^  sender, System::EventArgs^  e) {
+	Stream^ myStream;
+	if (saveFileDialog1->ShowDialog() == System::Windows::Forms::DialogResult::OK)
+	{
+
+		if ((myStream = saveFileDialog1->OpenFile()) != nullptr)
+		{
+			StreamWriter^ writer = gcnew StreamWriter(myStream);
+			//String^ path = saveFileDialog1->FileName;
+			//File::WriteAllText(saveFileDialog1->FileName, "HUELO");
+			writer->Write("Huesosi");
+			writer->Close();
+			myStream->Close();
+		}
+	}
 }
 };
 }
