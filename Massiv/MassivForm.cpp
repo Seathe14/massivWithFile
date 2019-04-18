@@ -12,7 +12,5 @@ int main()
 	Application::EnableVisualStyles();
 	Massiv::MassivForm form;
 	Application::Run(%form);
-
-
 	return 0;
 }

@@ -22,6 +22,9 @@ namespace Massiv {
 	/// </summary>
 
 	int maxDiap, minDiap, Num;
+	int* pMaxDiap = &maxDiap;
+	int* pMinDiap = &minDiap;
+	int* pNum = &Num;
 	vector <int> Array;
 	int rb;
 
@@ -417,7 +420,7 @@ namespace Massiv {
 			this->OpenFile->Name = L"OpenFile";
 			this->OpenFile->Size = System::Drawing::Size(127, 32);
 			this->OpenFile->TabIndex = 17;
-			this->OpenFile->Text = L"Открыть файл";
+			this->OpenFile->Text = L"Загрузить из файла";
 			this->OpenFile->UseVisualStyleBackColor = true;
 			this->OpenFile->Click += gcnew System::EventHandler(this, &MassivForm::OpenFile_Click);
 			// 
@@ -467,20 +470,22 @@ namespace Massiv {
  void Sum()
  {
 	 double oper = 0;
+	 double* pOper = &oper;
 	 for (int i = 0; i < Array.size(); i++)
 	 {
-		 oper += Array.at(i);
+		 *pOper += Array.at(i);
 	 }
-	 tbResult->Text = "Сумма элементов: " + oper.ToString();
+	 tbResult->Text = "Сумма элементов: " + (*pOper).ToString();
  }
  void Average()
  {
 	 double oper = 0;
+	 double* pOper = &oper;
 	 for (int i = 0; i < Array.size(); i++)
 	 {
-		 oper += Array.at(i);
+		 *pOper += Array.at(i);
 	 }
-	 tbResult->Text = "Среднее значение: " + (oper / Array.size()).ToString("F3");
+	 tbResult->Text = "Среднее значение: " + ((*pOper) / Array.size()).ToString("F3");
  }
  void Min(int min,int max)
  {
@@ -625,15 +630,15 @@ namespace Massiv {
 	 {
 		 Array.clear();
 		 tbArr->Text = "";
-		 Num = Convert::ToInt16(tbNum->Text);
-		 minDiap = Convert::ToInt16(tbMinDiap->Text);
-		 maxDiap = Convert::ToInt16(tbMaxDiap->Text);
+		 *pNum = Convert::ToInt16(tbNum->Text);
+		 *pMinDiap = Convert::ToInt16(tbMinDiap->Text);
+		 *pMaxDiap = Convert::ToInt16(tbMaxDiap->Text);
 		 srand(time(0));
-		 if (maxDiap > minDiap)
+		 if (*pMaxDiap > *pMinDiap)
 		 {
-			 for (int i = 0; i < Num; i++)
+			 for (int i = 0; i < *pNum; i++)
 			 {
-				 Array.push_back(rand() % (maxDiap - minDiap + 1) + minDiap);
+				 Array.push_back(rand() % (*pMaxDiap - *pMinDiap + 1) + *pMinDiap);
 			 }
 			 for (int i = 0; i < Array.size(); i++)
 			 {
@@ -650,28 +655,34 @@ namespace Massiv {
  {
 	 Array.clear();
 	 double oper = 0;
+	 double* pOper = &oper;
 	 int min, max;
+	 int* pMin = &min;
+	 int* pMax = &max;
 	 int buf, k = 0;
+	 int* pBuf = &buf;
+	 int* pK = &k;
 	 int push;
+	 int* pPush = &push;
 	 String^ buffer = tbArr->Text;
 	 string b = msclr::interop::marshal_as< std::string >(tbArr->Text);
 	 istringstream iss(b);
-	 while (iss >> push)
+	 while (iss >> *pPush)
 	 {
-		 if (k == 0)
+		 if (*pK == 0)
 		 {
-			 max = min = push;
+			 *pMax = *pMin = *pPush;
 		 }
-		 if (max < push)
+		 if (*pMax < *pPush)
 		 {
-			 max = push;
+			 *pMax = *pPush;
 		 }
-		 if (min > push)
+		 if (*pMin > *pPush)
 		 {
-			 min = push;
+			 *pMin = *pPush;
 		 }
-		 Array.push_back(push);
-		 k++;
+		 Array.push_back(*pPush);
+		 (*pK)++;
 	 }
 	 switch (rb)
 	 {
@@ -682,10 +693,10 @@ namespace Massiv {
 		 Average();
 		 break;
 	 case 3:
-		 Min(min, max);
+		 Min(*pMin, *pMax);
 		 break;
 	 case 4:
-		 Max(min, max);
+		 Max(*pMin, *pMax);
 		 break;
 	 case 5:
 		 Even();
@@ -704,6 +715,7 @@ namespace Massiv {
  }
 private: System::Void GenerateArr_Click(System::Object^  sender, System::EventArgs^  e) {
 	GenArr();
+	//AllocConsole();
 }
 private: System::Void radioButton1_CheckedChanged(System::Object^  sender, System::EventArgs^  e) {
 	rb = 1;
