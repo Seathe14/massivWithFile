@@ -554,8 +554,6 @@ namespace Massiv {
 		 if ((myStream = saveFileDialog1->OpenFile()) != nullptr)
 		 {
 			 StreamWriter^ writer = gcnew StreamWriter(myStream);
-			 //String^ path = saveFileDialog1->FileName;
-			 //File::WriteAllText(saveFileDialog1->FileName, "HUELO");
 			 if (tbArr->Text != "")
 			 {
 				 writer->WriteLine("Исходный массив:");
@@ -611,8 +609,6 @@ namespace Massiv {
 		 if ((fileStream = openFileDialog1->OpenFile()) != nullptr)
 		 {
 			 StreamReader^ reader = gcnew StreamReader(fileStream);
-			 // reader.
-			 // StreamWriter^ writer = gcnew StreamWriter(fileStream);
 			 while ((TextInFile = reader->ReadLine()) != nullptr)
 			 {
 				 if (reader->ReadLine() != "")
@@ -621,7 +617,6 @@ namespace Massiv {
 				 }
 			 }
 		 }
-		 //auto sr = gcnew StreamReader(openFileDialog1->FileName);
 	 }
  }
  void GenArr()
@@ -770,12 +765,10 @@ private: System::Void tbArr_KeyPress(System::Object^  sender, System::Windows::F
 	}
 	if (tbArr->Text->EndsWith("-") && e->KeyChar == '-')
 		e->Handled = true;
-	/*if (!(tbArr->Text->EndsWith(" ")) && e->KeyChar == '-' && tbArr->Text->Length > 0)
-		e->Handled = true;*/
+
 	if (tbArr->Text->EndsWith("-") && e->KeyChar == ' ')
 		e->Handled = true;
-	/*if (tbArr->Text->EndsWith(" ") && e->KeyChar == ' ')
-		e->Handled = true;*/
+
 	if (tbArr->Text == "" && e->KeyChar == ' ')
 		e->Handled = true;
 	if (tbArr->SelectionStart < tbArr->Text->Length && tbArr->SelectionStart>0)
@@ -791,8 +784,7 @@ private: System::Void tbArr_KeyPress(System::Object^  sender, System::Windows::F
 		}
 	if (tbArr->Text->EndsWith(" ") && e->KeyChar == ' ')
 		e->Handled = true;
-	//tbMinDiap->Text = Convert::ToString(tbArr->SelectionStart);
-	//tbMaxDiap->Text = Convert::ToString(tbArr->Text->Length);
+
 }
 private: System::Void OpenFile_Click(System::Object^  sender, System::EventArgs^  e) {
 	LoadFile();
